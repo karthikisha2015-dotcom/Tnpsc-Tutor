@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Check } from 'lucide-react';
-import { PricingPlan } from '../types';
+import { PricingPlan, ViewState } from '../types';
+
+interface PricingProps {
+  onNavigate: (view: ViewState) => void;
+}
 
 const plans: PricingPlan[] = [
   {
@@ -42,7 +46,7 @@ const plans: PricingPlan[] = [
   }
 ];
 
-const Pricing: React.FC = () => {
+const Pricing: React.FC<PricingProps> = ({ onNavigate }) => {
   const [isYearly, setIsYearly] = useState(false);
 
   return (
@@ -101,11 +105,14 @@ const Pricing: React.FC = () => {
                 ))}
               </ul>
 
-              <button className={`w-full py-3 rounded-xl font-bold transition-all ${
-                plan.isPopular 
-                  ? 'bg-primary text-white hover:bg-blue-700 shadow-lg shadow-blue-500/30' 
-                  : 'bg-gray-50 text-gray-900 hover:bg-gray-100'
-              }`}>
+              <button 
+                onClick={() => onNavigate('admin-dashboard')}
+                className={`w-full py-3 rounded-xl font-bold transition-all ${
+                  plan.isPopular 
+                    ? 'bg-primary text-white hover:bg-blue-700 shadow-lg shadow-blue-500/30' 
+                    : 'bg-gray-50 text-gray-900 hover:bg-gray-100'
+                }`}
+              >
                 {plan.priceMonthly > 0 ? 'Start Free Trial' : 'Contact Sales'}
               </button>
             </div>

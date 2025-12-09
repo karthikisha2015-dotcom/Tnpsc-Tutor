@@ -28,3 +28,66 @@ export interface FaqItem {
   question: string;
   answer: string;
 }
+
+export type ViewState = 
+  | 'landing' 
+  | 'admin-dashboard' 
+  | 'admin-test-builder' 
+  | 'admin-question-bank'
+  | 'student-dashboard' 
+  | 'student-test';
+
+export interface DashboardStat {
+  label: string;
+  value: string;
+  change?: string;
+  positive?: boolean;
+  icon: LucideIcon;
+  color: string;
+}
+
+export interface StudentResult {
+  id: string;
+  name: string;
+  avatar: string;
+  score: number;
+  rank: number;
+  trend: 'up' | 'down' | 'same';
+}
+
+export interface RecentTest {
+  id: string;
+  name: string;
+  date: string;
+  attempts: number;
+  avgScore: number;
+  status: 'Live' | 'Closed' | 'Draft';
+}
+
+export interface Question {
+  id: string;
+  text: string;
+  type: 'mcq' | 'descriptive';
+  marks: number;
+  options?: string[];
+  correctOption?: number;
+}
+
+export interface StudentTest {
+  id: string;
+  title: string;
+  subject: string;
+  duration: number; // minutes
+  questions: number;
+  status: 'upcoming' | 'live' | 'completed';
+  dueDate: string;
+}
+
+export interface StudentHistory {
+  id: string;
+  testName: string;
+  date: string;
+  score: number;
+  totalMarks: number;
+  rank: number;
+}

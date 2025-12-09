@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CheckCircle, Play } from 'lucide-react';
+import { ViewState } from '../types';
 
-const Hero: React.FC = () => {
+interface HeroProps {
+  onNavigate: (view: ViewState) => void;
+}
+
+const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   return (
     <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -19,7 +24,10 @@ const Hero: React.FC = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10">
-              <button className="w-full sm:w-auto bg-primary text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/30 transform hover:-translate-y-1">
+              <button 
+                onClick={() => onNavigate('admin-dashboard')}
+                className="w-full sm:w-auto bg-primary text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/30 transform hover:-translate-y-1"
+              >
                 Start Free Trial
               </button>
               <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white text-gray-700 border border-gray-200 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all">
@@ -45,8 +53,8 @@ const Hero: React.FC = () => {
           </div>
 
           {/* Right Content - Dashboard Mockup */}
-          <div className="flex-1 w-full max-w-xl lg:max-w-none">
-            <div className="relative rounded-2xl bg-white shadow-2xl border border-gray-100 p-4 rotate-1 lg:rotate-2 hover:rotate-0 transition-transform duration-500">
+          <div className="flex-1 w-full max-w-xl lg:max-w-none cursor-pointer" onClick={() => onNavigate('admin-dashboard')}>
+            <div className="relative rounded-2xl bg-white shadow-2xl border border-gray-100 p-4 rotate-1 lg:rotate-2 hover:rotate-0 transition-transform duration-500 group">
               {/* Mockup Header */}
               <div className="flex items-center justify-between border-b pb-4 mb-4">
                 <div className="flex items-center gap-2">
@@ -58,7 +66,7 @@ const Hero: React.FC = () => {
               </div>
               
               {/* Mockup Body */}
-              <div className="space-y-4">
+              <div className="space-y-4 pointer-events-none">
                 <div className="flex gap-4">
                   <div className="w-1/3 bg-blue-50 p-4 rounded-xl">
                     <div className="text-primary font-bold text-2xl">1,240</div>
@@ -81,7 +89,7 @@ const Hero: React.FC = () => {
                   </div>
                   <div className="space-y-3">
                     {[1, 2, 3].map((i) => (
-                      <div key={i} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer">
+                      <div key={i} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500 font-bold">
                             T{i}
@@ -98,6 +106,11 @@ const Hero: React.FC = () => {
                     ))}
                   </div>
                 </div>
+              </div>
+              
+              {/* Click Overlay hint */}
+              <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100">
+                <span className="bg-white text-primary px-4 py-2 rounded-full font-bold shadow-lg">Click to View Dashboard</span>
               </div>
             </div>
             {/* Decor blur */}

@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { ViewState } from '../types';
 
-const Footer: React.FC = () => {
+interface FooterProps {
+  onNavigate: (view: ViewState) => void;
+}
+
+const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   return (
     <footer>
       {/* Final CTA */}
@@ -12,7 +17,10 @@ const Footer: React.FC = () => {
           <p className="text-blue-100 text-lg mb-8">
             Start using the next-generation platform for TNPSC mock tests.
           </p>
-          <button className="bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-50 transition-all shadow-xl">
+          <button 
+            onClick={() => onNavigate('admin-dashboard')}
+            className="bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-50 transition-all shadow-xl"
+          >
             Start Free Trial
           </button>
           <p className="mt-4 text-sm text-blue-200 opacity-80">No credit card required. 14-day free trial.</p>
@@ -22,7 +30,7 @@ const Footer: React.FC = () => {
       {/* Footer Links */}
       <div className="bg-accent text-gray-400 py-12 px-4 border-t border-gray-800">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-2xl font-bold font-heading text-white">
+          <div className="text-2xl font-bold font-heading text-white cursor-pointer" onClick={() => onNavigate('landing')}>
             TNPSC<span className="text-primary">Master</span>
           </div>
           <div className="flex gap-8 text-sm">

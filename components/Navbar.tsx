@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import { ViewState } from '../types';
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  onNavigate: (view: ViewState) => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -29,7 +34,7 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <div className="flex items-center">
+          <div className="flex items-center cursor-pointer" onClick={() => onNavigate('landing')}>
             <span className={`text-2xl font-bold font-heading ${isScrolled ? 'text-primary' : 'text-primary'}`}>
               TNPSC<span className="text-accent">Master</span>
             </span>
@@ -46,7 +51,10 @@ const Navbar: React.FC = () => {
                 {link.name}
               </a>
             ))}
-            <button className="bg-primary text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30">
+            <button 
+              onClick={() => onNavigate('admin-dashboard')}
+              className="bg-primary text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30"
+            >
               Start Free Trial
             </button>
           </div>
@@ -78,7 +86,13 @@ const Navbar: React.FC = () => {
               </a>
             ))}
             <div className="pt-4">
-              <button className="w-full bg-primary text-white px-6 py-3 rounded-lg font-medium shadow-md">
+              <button 
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onNavigate('admin-dashboard');
+                }}
+                className="w-full bg-primary text-white px-6 py-3 rounded-lg font-medium shadow-md"
+              >
                 Start Free Trial
               </button>
             </div>
