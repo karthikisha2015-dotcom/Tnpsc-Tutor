@@ -30,12 +30,15 @@ export interface FaqItem {
 }
 
 export type ViewState = 
-  | 'landing' 
+  | 'landing'
+  | 'login'
   | 'admin-dashboard' 
   | 'admin-test-builder' 
   | 'admin-question-bank'
   | 'student-dashboard' 
-  | 'student-test';
+  | 'student-test'
+  | 'super-admin-dashboard'
+  | 'super-admin-centers';
 
 export interface DashboardStat {
   label: string;
@@ -90,4 +93,16 @@ export interface StudentHistory {
   score: number;
   totalMarks: number;
   rank: number;
+}
+
+export interface CoachingCenter {
+  id: string;
+  name: string;
+  ownerName: string;
+  email: string;
+  phone: string;
+  plan: 'Free' | 'Starter' | 'Growth' | 'Enterprise';
+  status: 'active' | 'inactive';
+  joinedDate: string;
+  studentCount: number;
 }

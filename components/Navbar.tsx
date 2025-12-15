@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Shield } from 'lucide-react';
 import { ViewState } from '../types';
 
 interface NavbarProps {
@@ -51,8 +51,18 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
                 {link.name}
               </a>
             ))}
+            
+            {/* Super Admin Demo Link */}
+             <button 
+              onClick={() => onNavigate('login')}
+              className="text-gray-500 hover:text-gray-900 font-medium text-sm flex items-center gap-1"
+            >
+              <Shield size={16} />
+              Login
+            </button>
+
             <button 
-              onClick={() => onNavigate('admin-dashboard')}
+              onClick={() => onNavigate('login')}
               className="bg-primary text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30"
             >
               Start Free Trial
@@ -85,11 +95,21 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
                 {link.name}
               </a>
             ))}
+            <button 
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onNavigate('login');
+                }}
+                className="w-full text-left px-3 py-3 text-gray-700 font-medium hover:bg-blue-50 hover:text-primary rounded-md flex items-center gap-2"
+              >
+                <Shield size={16} />
+                Login
+            </button>
             <div className="pt-4">
               <button 
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  onNavigate('admin-dashboard');
+                  onNavigate('login');
                 }}
                 className="w-full bg-primary text-white px-6 py-3 rounded-lg font-medium shadow-md"
               >

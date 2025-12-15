@@ -13,13 +13,17 @@ import {
   Bell,
   Search,
   ChevronRight,
-  HelpCircle
+  HelpCircle,
+  Shield,
+  Building2,
+  Activity
 } from 'lucide-react';
 import { ViewState } from '../types';
+import { useAuth } from '../contexts/AuthContext';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
-  role: 'admin' | 'student';
+  role: 'admin' | 'student' | 'super-admin';
   currentView: ViewState;
   onNavigate: (view: ViewState) => void;
 }
@@ -27,6 +31,12 @@ interface DashboardLayoutProps {
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, role, currentView, onNavigate }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { signOut, user } = useAuth();
+
+  const handleLogout = async () => {
+    await signOut();
+    onNavigate('landing');
+  };
 
   const adminLinks = [
     { icon: LayoutDashboard, label: 'Dashboard', view: 'admin-dashboard' as const },
@@ -45,7 +55,18 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, role, curre
     { icon: HelpCircle, label: 'Help', view: 'student-dashboard' as const }, // Placeholder
   ];
 
-  const links = role === 'admin' ? adminLinks : studentLinks;
+  const superAdminLinks = [
+    { icon: LayoutDashboard, label: 'Overview', view: 'super-admin-dashboard' as const },
+    { icon: Building2, label: 'Centers', view: 'super-admin-centers' as const },
+    { icon: Activity, label: 'Monitoring', view: 'super-admin-dashboard' as const }, // Placeholder
+    { icon: Settings, label: 'Settings', view: 'super-admin-dashboard' as const }, // Placeholder
+  ];
+
+  const links = role === 'super-admin' 
+    ? superAdminLinks 
+    : role === 'admin' 
+      ? adminLinks 
+      : studentLinks;
 
   return (
     <div className="min-h-screen bg-[#F5F7FB] flex font-sans">
@@ -70,12 +91,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, role, curre
             className="flex items-center gap-2 overflow-hidden whitespace-nowrap cursor-pointer"
             onClick={() => onNavigate('landing')}
           >
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center flex-shrink-0 text-white font-bold text-lg">
-              T
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-white font-bold text-lg ${role === 'super-admin' ? 'bg-gray-900' : 'bg-primary'}`}>
+              {role === 'super-admin' ? 'S' : 'T'}
             </div>
             {(sidebarOpen || mobileMenuOpen) && (
               <span className="font-bold text-xl text-gray-800 font-heading">
-                TNPSC<span className="text-primary">Master</span>
+                {role === 'super-admin' ? 'Super Admin' : <>TNPSC<span className="text-primary">Master</span></>}
               </span>
             )}
           </div>
@@ -121,7 +142,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, role, curre
         {/* User Profile / Logout */}
         <div className="p-4 border-t border-gray-100">
           <button 
-            onClick={() => onNavigate('landing')}
+            onClick={handleLogout}
             className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl text-red-500 hover:bg-red-50 transition-all
               ${!sidebarOpen && !mobileMenuOpen ? 'justify-center' : ''}
             `}
@@ -180,11 +201,19 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, role, curre
             {/* Profile */}
             <div className="flex items-center gap-3 pl-4 border-l border-gray-100">
               <div className="text-right hidden sm:block">
-                <div className="text-sm font-bold text-gray-900">{role === 'admin' ? 'Admin User' : 'Student User'}</div>
-                <div className="text-xs text-gray-500">{role === 'admin' ? 'SK Academy' : 'Batch 2025'}</div>
+                <div className="text-sm font-bold text-gray-900">
+                  {role === 'super-admin' ? 'System Owner' : role === 'admin' ? 'Center Admin' : 'Student User'}
+                </div>
+                <div className="text-xs text-gray-500 max-w-[120px] truncate">
+                  {user?.email || 'Guest'}
+                </div>
               </div>
-              <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-lg border border-primary/20 cursor-pointer">
-                {role === 'admin' ? 'A' : 'S'}
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg border cursor-pointer ${
+                role === 'super-admin' 
+                  ? 'bg-gray-900 text-white border-gray-700' 
+                  : 'bg-primary/10 text-primary border-primary/20'
+              }`}>
+                {role === 'super-admin' ? 'S' : role === 'admin' ? 'A' : 'S'}
               </div>
             </div>
           </div>
